@@ -88,14 +88,15 @@ public class SeTuMod {
      * @return 涩图文件
      */
     public File randomSeTuFile() {
-        File setuLib = new File(SETU_PATH + "/img");
+        String setuLibPath = SETU_PATH + "/img";
+        File setuLib = new File(setuLibPath);
         if (!setuLib.exists()) return null;
 
         String[] setuPaths = setuLib.list();
         if (setuPaths != null && setuPaths.length > 0) {
             int idx = (int) (Math.random() * setuPaths.length); //库中随机一个文件
             String setuPath = setuPaths[idx];
-            File setuFile = new File(setuPath);
+            File setuFile = new File(setuLibPath+"/"+setuPath);
             if (setuFile.exists()) return setuFile; //如果涩图文件存在则返回
         }
 
@@ -124,7 +125,7 @@ public class SeTuMod {
 
             driver.findElement(By.id("switcher_plogin")).click();   //点击 "账号密码登录"
 
-            //输入账号密码并登录
+            //输入账号密码并登录，这里登录的qq号需要有访问空间相册的权限
             WebElement qqid = wait.until(ExpectedConditions.elementToBeClickable(By.name("u")));
             qqid.sendKeys("2394495949");
             WebElement pwd = wait.until(ExpectedConditions.elementToBeClickable(By.name("p")));
