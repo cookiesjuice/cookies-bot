@@ -98,6 +98,11 @@
             <version>1.4.10</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.12</version>
+        </dependency>
         <!--kotlin-end-->
 
     </dependencies>

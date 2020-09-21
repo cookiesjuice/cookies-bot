@@ -2,6 +2,7 @@ package com.github.cookiesjuice.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.github.cookiesjuice.service.SetuService;
 import com.github.cookiesjuice.util.HttpUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -16,7 +17,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-public class SetuServiceImpl {
+public class SetuServiceImpl implements SetuService {
     /**
      * 涩图根目录
      */
@@ -35,7 +36,7 @@ public class SetuServiceImpl {
     /**
      * 读取并初始化配置文件
      */
-    public SetuServiceImpl() {
+    public SetuServiceImpl()  {
         File file = new File(SETU_PATH + "/config");
         FileInputStream fi = null;
         FileOutputStream fo = null;
@@ -210,5 +211,10 @@ public class SetuServiceImpl {
 
     public static void main(String[] args) {
         new SetuServiceImpl().updateSeTu();
+    }
+
+    @Override
+    public int init() {
+        return 0;
     }
 }
