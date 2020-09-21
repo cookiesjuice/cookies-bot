@@ -1,23 +1,20 @@
-package com.github.cookiesjuice
+package com.github.cookiesjuice.client
 
-import com.github.cookiesjuice.moudle.SeTuMod
-import com.github.cookiesjuice.moudle.TencentAPI
+import com.github.cookiesjuice.service.impl.SetuServiceImpl
+import com.github.cookiesjuice.service.impl.TencentAPIMod
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.alsoLogin
 import net.mamoe.mirai.event.subscribeAlways
 import net.mamoe.mirai.join
 import net.mamoe.mirai.message.GroupMessageEvent
 import net.mamoe.mirai.message.data.At
-import net.mamoe.mirai.message.data.Message
-import net.mamoe.mirai.message.data.MessageChain
 import net.mamoe.mirai.message.data.content
-import kotlin.math.atan
 
 suspend fun main() {
 
     val qqid = 1029008034L
     val pwd = "lz20000817*"
-    val seTuMod = SeTuMod()
+    val seTuMod = SetuServiceImpl()
 
     val bot = Bot(qqid, pwd).alsoLogin()
     bot.subscribeAlways<GroupMessageEvent> { event ->
@@ -26,7 +23,7 @@ suspend fun main() {
         if (message[At]?.target == qqid) {
             //获得消息内容，因为at消息为“@xxx content...”，所以需要过滤掉“@xxx”
             val content = message.content.replace(message[At]!!.display, "")
-            val replyMsg = TencentAPI.ZhiNengXianLiao(content)
+            val replyMsg = TencentAPIMod.ZhiNengXianLiao(content)
 
             event.reply(replyMsg)
         } else {

@@ -1,8 +1,8 @@
-package com.github.cookiesjuice.moudle;
+package com.github.cookiesjuice.service.impl;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.github.cookiesjuice.util.HttpClient;
+import com.github.cookiesjuice.util.HttpUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -16,7 +16,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 
-public class SeTuMod {
+public class SetuServiceImpl {
     /**
      * 涩图根目录
      */
@@ -35,7 +35,7 @@ public class SeTuMod {
     /**
      * 读取并初始化配置文件
      */
-    public SeTuMod() {
+    public SetuServiceImpl() {
         File file = new File(SETU_PATH + "/config");
         FileInputStream fi = null;
         FileOutputStream fo = null;
@@ -168,7 +168,7 @@ public class SeTuMod {
                 String path = SETU_PATH + "/img/" + name;
                 File file = new File(path);
                 if (!file.exists()) {
-                    HttpClient.downloadFile(src, path);
+                    HttpUtils.downloadFile(src, path);
                     imgLen++;
                     saveConfig();
                 }
@@ -209,6 +209,6 @@ public class SeTuMod {
     }
 
     public static void main(String[] args) {
-        new SeTuMod().updateSeTu();
+        new SetuServiceImpl().updateSeTu();
     }
 }

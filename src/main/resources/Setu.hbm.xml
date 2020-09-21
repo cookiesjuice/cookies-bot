@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+    <class name="com.github.cookiesjuice.entity.Setu" table="cookies_bot_setu">
+        <id name="id" type="java.lang.Long">
+            <column name="setu_id"/>
+            <generator class="identity"/>
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="setu_name" not-null="true" unique="true"/>
+        </property>
+        <property name="author" type="java.util.Date">
+            <column name="setu_author" not-null="true"/>
+        </property>
+
+        <set name="tags">
+            <key column="setu_id"/>
+            <many-to-many class="com.github.cookiesjuice.entity.Tag" column="tag_id"/>
+        </set>
+
+        <set name="favoriteUsers">
+            <key column="setu_id"/>
+            <many-to-many class="com.github.cookiesjuice.entity.User" column="user_id"/>
+        </set>
+
+        <one-to-one name="uploadUser" class="com.github.cookiesjuice.entity.User"/>
+    </class>
+</hibernate-mapping>

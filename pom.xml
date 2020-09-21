@@ -18,18 +18,23 @@
 
     <dependencies>
 
+        <!--fastjson-begin-->
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
             <version>1.2.21</version>
         </dependency>
+        <!--fastjson-end-->
 
+        <!--selenium-begin-->
         <dependency>
             <groupId>org.seleniumhq.selenium</groupId>
             <artifactId>selenium-java</artifactId>
             <version>3.4.0</version>
         </dependency>
+        <!--selenium-end-->
 
+        <!--mirai-begin-->
         <dependency>
             <groupId>net.mamoe</groupId>
             <artifactId>mirai-core</artifactId>
@@ -40,7 +45,48 @@
             <artifactId>mirai-core-qqandroid</artifactId>
             <version>1.2.3</version>
         </dependency>
+        <!--mirai-end-->
 
+        <!--hibernate-dependency-begin-->
+        <dependency>
+            <groupId>dom4j</groupId>
+            <artifactId>dom4j</artifactId>
+            <version>1.6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+            <version>1.1.1</version>
+        </dependency>
+        <dependency>
+            <groupId>commons-collections</groupId>
+            <artifactId>commons-collections</artifactId>
+            <version>3.2.1</version>
+        </dependency>
+        <dependency>
+            <groupId>cglib</groupId>
+            <artifactId>cglib-nodep</artifactId>
+            <version>3.1</version>
+        </dependency>
+        <!--hibernate-dependency-end-->
+
+        <!--hibernate-begin-->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>5.2.6.Final</version>
+        </dependency>
+        <!--hibernate-end-->
+
+        <!--mysql-begin-->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.11</version>
+        </dependency>
+        <!--mysql-end-->
+
+        <!--kotlin-begin-->
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib-jdk8</artifactId>
@@ -52,6 +98,7 @@
             <version>1.4.10</version>
             <scope>test</scope>
         </dependency>
+        <!--kotlin-end-->
 
     </dependencies>
 

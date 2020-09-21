@@ -8,7 +8,7 @@ import java.security.MessageDigest;
 /**
  * Http客户端工具
  */
-public class HttpClient {
+public class HttpUtils {
 
     /**
      * 下载文件到指定目录

@@ -1,7 +1,7 @@
-package com.github.cookiesjuice.moudle;
+package com.github.cookiesjuice.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
-import com.github.cookiesjuice.util.HttpClient;
+import com.github.cookiesjuice.util.HttpUtils;
 import com.github.cookiesjuice.util.MD5Utils;
 
 import java.io.UnsupportedEncodingException;
@@ -12,7 +12,7 @@ import java.util.*;
 /**
  * 腾讯AI开放平台接口
  */
-public class TencentAPI {
+public class TencentAPIMod {
 
     /**
      * 智能闲聊
@@ -43,7 +43,7 @@ public class TencentAPI {
 
         String paramsstr = params.toString().replaceAll("[{}]", "").replace(", ", "&");
         System.out.println("post;url=" + url + ";params=" + paramsstr);
-        byte[] retBytes = HttpClient.doPost(url, paramsstr);
+        byte[] retBytes = HttpUtils.doPost(url, paramsstr);
         if (retBytes != null) {
             String retString = new String(retBytes, StandardCharsets.UTF_8);
             JSONObject retJson = JSONObject.parseObject(retString);
