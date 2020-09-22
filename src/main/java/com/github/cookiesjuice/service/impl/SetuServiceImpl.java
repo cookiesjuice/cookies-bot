@@ -213,8 +213,4 @@ public class SetuServiceImpl implements SetuService {
         new SetuServiceImpl().updateSeTu();
     }
 
-    @Override
-    public int init() {
-        return 0;
-    }
 }

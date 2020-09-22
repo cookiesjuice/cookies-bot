@@ -7,16 +7,16 @@ import lombok.Getter;
 import java.io.*;
 
 public class LoginController {
-    private static final String CONFIG = "config.JSON";
+    private static final String CONFIG_PATH = "src/main/resources/config.json";
 
     @Getter
-    private final long id;
+    public final long id;
 
     @Getter
-    private final String password;
+    public final String password;
 
     public LoginController() throws Exception {
-        LoginInfo info = JSON.parseObject(new FileInputStream(new File(CONFIG)), LoginInfo.class);
+        LoginInfo info = JSON.parseObject(new FileInputStream(new File(CONFIG_PATH)), LoginInfo.class);
         this.id = info.getId();
         this.password = info.getPassword();
     }

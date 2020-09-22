@@ -1,15 +1,21 @@
 package com.github.cookiesjuice.controller;
 
 import com.github.cookiesjuice.response.Message;
-import com.github.cookiesjuice.service.impl.SetuServiceImpl;
-import com.github.cookiesjuice.service.impl.TencentAPIMod;
+import com.github.cookiesjuice.service.SetuService;
+import com.github.cookiesjuice.service.TencentAPIService;
+
 
 import java.io.File;
 
 public class MessageController {
 
-    // TODO change to Service instead of implementation
-    private SetuServiceImpl setuService = new SetuServiceImpl();
+    private final SetuService setuService;
+    private final TencentAPIService tencentAPIService;
+
+    public MessageController(SetuService setuService, TencentAPIService tencentAPIService){
+        this.setuService = setuService;
+        this.tencentAPIService = tencentAPIService;
+    }
 
     public Message handlePlainMessage(String input){
         if(input.contains("涩图")){
@@ -21,7 +27,7 @@ public class MessageController {
 
     public Message handleAtMessage(String input){
         Message message = new Message();
-        String result = TencentAPIMod.ZhiNengXianLiao(input);
+        String result = tencentAPIService.autoChat(input);
         return message.put(result);
     }
 }

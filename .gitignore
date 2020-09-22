@@ -1,3 +1,5 @@
 /.idea
 /cookies-bot.iml
-config.JSON
+config.json
+src/main/resources/config.json
+/target
