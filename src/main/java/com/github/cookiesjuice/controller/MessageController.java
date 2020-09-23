@@ -25,6 +25,7 @@ public class MessageController {
             for (int i = 0; i < cNumbers.length; i++) {
                 if (input.contains("涩图" + cNumbers[i] + "连")) {
                     n = i + 1;
+                    break;
                 }
             }
             if (n > 0) {
@@ -35,6 +36,7 @@ public class MessageController {
                         message.put(new Image(image));
                     }
                 }
+                return message;
             } else {
                 File image = setuService.randomSeTuFile();
                 if (image != null) {
