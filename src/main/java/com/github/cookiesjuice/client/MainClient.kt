@@ -36,15 +36,15 @@ suspend fun main() {
             val content = message.content.replace(message[At]!!.display, "")
             val respMsg = messageController.handleAtMessage(content)
             if (respMsg != null) {
-                val replyMsg = MessageBuilder.buildFromGroupMessage(this, respMsg)
-                event.reply(replyMsg)
+                val replyMsgChain = MessageBuilder.buildFromGroupMessage(this, respMsg)
+                reply(replyMsgChain)
             }
         } else {
             val content = message.content
             val respMsg = messageController.handlePlainMessage(content)
             if (respMsg != null) {
-                val replyMsg = MessageBuilder.buildFromGroupMessage(this, respMsg)
-                event.reply(replyMsg)
+                val replyMsgChain = MessageBuilder.buildFromGroupMessage(this, respMsg)
+                reply(replyMsgChain)
             }
         }
     }

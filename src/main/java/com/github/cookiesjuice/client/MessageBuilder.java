@@ -2,26 +2,22 @@ package com.github.cookiesjuice.client;
 
 import com.github.cookiesjuice.response.MessageContent;
 import net.mamoe.mirai.message.GroupMessageEvent;
-import net.mamoe.mirai.message.data.At;
-import net.mamoe.mirai.message.data.Message;
-import net.mamoe.mirai.message.data.PlainText;
+import net.mamoe.mirai.message.data.*;
 
 public class MessageBuilder {
 
-    public static net.mamoe.mirai.message.data.Message buildFromGroupMessage(GroupMessageEvent groupMessage, com.github.cookiesjuice.response.Message message) {
+    public static MessageChain buildFromGroupMessage(GroupMessageEvent groupMessage, com.github.cookiesjuice.response.Message message) {
+        MessageChainBuilder chainBuilder = new MessageChainBuilder();
         MessageContent content = message.getHead();
-        Message buildMessage;
 
         if (content != null) {
-            buildMessage = convertMessageToMirai(groupMessage, content);
+            chainBuilder.add(convertMessageToMirai(groupMessage, content));
             while ((content = content.getNext()) != null) {
-                buildMessage.plus(convertMessageToMirai(groupMessage, content));
+                chainBuilder.add(convertMessageToMirai(groupMessage, content));
             }
-        } else {
-            buildMessage = new PlainText("");
         }
 
-        return buildMessage;
+        return chainBuilder.build();
     }
 
     public static Message convertMessageToMirai(GroupMessageEvent groupMessage, com.github.cookiesjuice.response.MessageContent content) {
