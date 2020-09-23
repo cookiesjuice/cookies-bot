@@ -1,29 +1,31 @@
-<?xml version="1.0" encoding="GBK"?>
-<!-- Ö¸¶¨HibernateÅäÖÃÎÄ¼þµÄDTDÐÅÏ¢ -->
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- æŒ‡å®šHibernateé…ç½®æ–‡ä»¶çš„DTDä¿¡æ¯ -->
 <!DOCTYPE hibernate-configuration PUBLIC
         "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
         "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
-<!-- hibernate- configurationÊÇÁ¬½ÓÅäÖÃÎÄ¼þµÄ¸ùÔªËØ -->
+<!-- hibernate- configurationæ˜¯è¿žæŽ¥é…ç½®æ–‡ä»¶çš„æ ¹å…ƒç´  -->
 <hibernate-configuration>
     <session-factory>
-        <!-- Ö¸¶¨Á¬½ÓÊý¾Ý¿âËùÓÃµÄÇý¶¯ -->
+        <!-- æŒ‡å®šè¿žæŽ¥æ•°æ®åº“æ‰€ç”¨çš„é©±åŠ¨ -->
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
-        <!-- Ö¸¶¨Á¬½ÓÊý¾Ý¿âµÄurl£¬hibernateÁ¬½ÓµÄÊý¾Ý¿âÃû -->
-        <property name="connection.url">jdbc:mysql://127.0.0.1/db_cookies_bot</property>
-        <!-- Ö¸¶¨Á¬½ÓÊý¾Ý¿âµÄÓÃ»§Ãû -->
-        <property name="connection.username">root</property>
-        <!-- Ö¸¶¨Á¬½ÓÊý¾Ý¿âµÄÃÜÂë -->
-        <property name="connection.password">cookies.bot</property>
+        <!-- æŒ‡å®šè¿žæŽ¥æ•°æ®åº“çš„urlï¼Œhibernateè¿žæŽ¥çš„æ•°æ®åº“å -->
+        <property name="connection.url">jdbc:mysql://8.129.170.99:3306/db_cookies_bot?useUnicode=true&amp;
+            characterEncoding=utf-8&amp;useSSL=false&amp;serverTimezone=GMT</property>
+        <!-- æŒ‡å®šè¿žæŽ¥æ•°æ®åº“çš„ç”¨æˆ·å -->
+        <property name="connection.username">cookies-bot</property>
+        <!-- æŒ‡å®šè¿žæŽ¥æ•°æ®åº“çš„å¯†ç  -->
+        <property name="connection.password">cookies-bot.2020</property>
 
-        <!-- Ö¸¶¨Êý¾Ý¿â·½ÑÔ -->
+        <!-- æŒ‡å®šæ•°æ®åº“æ–¹è¨€ -->
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
-        <!-- ¸ù¾ÝÐèÒª×Ô¶¯´´½¨Êý¾Ý±í -->
-        <property name="hibernate.hbm2ddl.auto">update</property>
-        <!-- ÏÔÊ¾Hibernate³Ö¾Ã»¯²Ù×÷ËùÉú³ÉµÄSQL -->
+        <!-- æ ¹æ®éœ€è¦è‡ªåŠ¨åˆ›å»ºæ•°æ®è¡¨ -->
+        <property name="hibernate.hbm2ddl.auto">create</property>
+        <!-- æ˜¾ç¤ºHibernateæŒä¹…åŒ–æ“ä½œæ‰€ç”Ÿæˆçš„SQL -->
         <property name="show_sql">true</property>
-        <!-- ½«SQL½Å±¾½øÐÐ¸ñÊ½»¯ºóÔÙÊä³ö -->
+        <!-- å°†SQLè„šæœ¬è¿›è¡Œæ ¼å¼åŒ–åŽå†è¾“å‡º -->
         <property name="hibernate.format_sql">true</property>
-        <!-- ÂÞÁÐËùÓÐµÄÓ³ÉäÎÄ¼þ -->
+        <!-- ç½—åˆ—æ‰€æœ‰çš„æ˜ å°„æ–‡ä»¶ -->
         <mapping resource="Setu.hbm.xml"/>
+        <mapping resource="User.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

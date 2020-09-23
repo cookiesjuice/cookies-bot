@@ -2,13 +2,17 @@ package com.github.cookiesjuice.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.github.cookiesjuice.service.TencentAPIService;
+import com.github.cookiesjuice.util.ConfigInfo;
 import com.github.cookiesjuice.util.HttpUtils;
 import com.github.cookiesjuice.util.MD5Utils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
 
 /**
  * 腾讯AI开放平台接口
@@ -25,8 +29,8 @@ public class TencentAPIServiceImpl implements TencentAPIService {
         String reply = null;
 
         String url = "https://api.ai.qq.com/fcgi-bin/nlp/nlp_textchat";
-        String appid = "2156830448";
-        String appkey = "DZC8fa4hQUQ48cTT";
+        String appid = ConfigInfo.config.getString("service_tencent_appid");
+        String appkey = ConfigInfo.config.getString("service_tencent_appkey");
 
         Map<String, String> params = new HashMap<>();
         params.put("app_id", appid);

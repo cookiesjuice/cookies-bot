@@ -120,7 +120,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>top.zhenrowe.MainKt</mainClass>
+                            <mainClass>com.github.cookiesjuice.client.MainClientKt</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

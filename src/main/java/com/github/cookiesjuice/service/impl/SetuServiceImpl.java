@@ -3,6 +3,7 @@ package com.github.cookiesjuice.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.cookiesjuice.service.SetuService;
+import com.github.cookiesjuice.util.ConfigInfo;
 import com.github.cookiesjuice.util.HttpUtils;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -36,7 +37,7 @@ public class SetuServiceImpl implements SetuService {
     /**
      * 读取并初始化配置文件
      */
-    public SetuServiceImpl()  {
+    public SetuServiceImpl() {
         File file = new File(SETU_PATH + "/config");
         FileInputStream fi = null;
         FileOutputStream fo = null;
@@ -97,7 +98,7 @@ public class SetuServiceImpl implements SetuService {
         if (setuPaths != null && setuPaths.length > 0) {
             int idx = (int) (Math.random() * setuPaths.length); //库中随机一个文件
             String setuPath = setuPaths[idx];
-            File setuFile = new File(setuLibPath+"/"+setuPath);
+            File setuFile = new File(setuLibPath + "/" + setuPath);
             if (setuFile.exists()) return setuFile; //如果涩图文件存在则返回
         }
 
@@ -128,9 +129,9 @@ public class SetuServiceImpl implements SetuService {
 
             //输入账号密码并登录，这里登录的qq号需要有访问空间相册的权限
             WebElement qqid = wait.until(ExpectedConditions.elementToBeClickable(By.name("u")));
-            qqid.sendKeys("2394495949");
+            qqid.sendKeys(ConfigInfo.config.getString("service_setu_id"));
             WebElement pwd = wait.until(ExpectedConditions.elementToBeClickable(By.name("p")));
-            pwd.sendKeys("lz20000914*");
+            pwd.sendKeys(ConfigInfo.config.getString("service_setu_password"));
             WebElement searchButton = driver.findElement(By.id("login_button"));
             searchButton.click();
 

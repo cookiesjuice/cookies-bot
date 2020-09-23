@@ -1,11 +1,14 @@
 package com.github.cookiesjuice.entity;
 
+import lombok.Data;
+
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * 用户实体类
  */
+@Data
 public class User {
     /**
      * 用户id
@@ -13,31 +16,17 @@ public class User {
     private long id;
 
     /**
+     * 参与了评分的涩图
+     */
+    private Set<Setu> gradeSetus = new HashSet<>();
+
+    /**
      * 喜欢的涩图
      */
-    private Set<Setu> favoriteSetu = new HashSet<>();
+    private Set<Setu> favoriteSetus = new HashSet<>();
 
-    public User() {
-    }
-
-    public User(long id, Set<Setu> favoriteSetu) {
-        this.id = id;
-        this.favoriteSetu = favoriteSetu;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public Set<Setu> getFavoriteSetu() {
-        return favoriteSetu;
-    }
-
-    public void setFavoriteSetu(Set<Setu> favoriteSetu) {
-        this.favoriteSetu = favoriteSetu;
-    }
+    /**
+     * 上传的涩图
+     */
+    private Set<Setu> uploadSetus = new HashSet<>();
 }
