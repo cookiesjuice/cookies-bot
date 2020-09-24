@@ -10,9 +10,13 @@ import org.hibernate.query.Query;
 import org.hibernate.service.ServiceRegistry;
 
 import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 public abstract class DaoImpl<T> implements Dao<T> {
+
+    private Class<T> tClass;
+
     private static final SessionFactory sessionFactory;
     private Session session;
 
@@ -30,9 +34,16 @@ public abstract class DaoImpl<T> implements Dao<T> {
         }
     }
 
+    @SuppressWarnings("unchecked")
+    public DaoImpl(){
+        this.tClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+
+    }
+
     /**
      * 打开一个会话
      */
+    @Override
     public Session openSession() {
         if (session == null) {
             session = sessionFactory.openSession();
@@ -43,6 +54,7 @@ public abstract class DaoImpl<T> implements Dao<T> {
     /**
      * 关闭一个会话
      */
+    @Override
     public void closeSession() {
         if (session != null) {
             session.close();
@@ -52,6 +64,7 @@ public abstract class DaoImpl<T> implements Dao<T> {
     /**
      * 保存或更新一个对象
      */
+    @Override
     public void saveOrUpdate(T object) {
         try {
             Session session = openSession();
@@ -66,6 +79,7 @@ public abstract class DaoImpl<T> implements Dao<T> {
     /**
      * 保存或更新一组对象
      */
+    @Override
     public void saveAll(List<T> list) {
         try {
             Session session = openSession();
@@ -82,6 +96,7 @@ public abstract class DaoImpl<T> implements Dao<T> {
     /**
      * 删除一个对象
      */
+    @Override
     public void delete(T object) {
         try {
             Session session = openSession();
@@ -93,10 +108,15 @@ public abstract class DaoImpl<T> implements Dao<T> {
         }
     }
 
+    @Override
+    public T findByLongId(Serializable id) {
+        return findByLongId(tClass, id);
+    }
+
     /**
      * 根据long型主键查找对象
      */
-    protected T findByLongId(Class<T> t, Serializable id) {
+    private T findByLongId(Class<T> t, Serializable id) {
         T ret = null;
         try {
             Session session = openSession();
@@ -110,10 +130,15 @@ public abstract class DaoImpl<T> implements Dao<T> {
         return ret;
     }
 
+    @Override
+    public List<T> findAll() {
+        return findAll(tClass);
+    }
+
     /**
      * 查找所有对象
      */
-    protected List<T> findAll(Class<T> t) {
+    private List<T> findAll(Class<T> t) {
         List<T> list;
         try {
             Session session = openSession();

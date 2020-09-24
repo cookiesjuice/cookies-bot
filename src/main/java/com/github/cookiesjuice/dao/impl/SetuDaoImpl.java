@@ -11,14 +11,4 @@ import java.util.Set;
  * 涩图数据访问接口实现类
  */
 public class SetuDaoImpl extends DaoImpl<Setu> implements SetuDao {
-
-    @Override
-    public Setu findByLongId(Serializable id) {
-        return super.findByLongId(Setu.class, id);
-    }
-
-    @Override
-    public List<Setu> findAll() {
-        return super.findAll(Setu.class);
-    }
 }
