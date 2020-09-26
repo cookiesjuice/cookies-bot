@@ -9,7 +9,9 @@ import com.github.cookiesjuice.service.SetuService;
 import com.github.cookiesjuice.service.TencentAPIService;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class MessageController {
 
@@ -25,11 +27,35 @@ public class MessageController {
 
     public Message handlePlainMessage(String input) {
         if (input.contains("涩图")) {
-            String[] cNumbers = {"一", "二", "三", "四", "五", "六", "七", "八", "九", "十"};
+            Map<String,Integer> inputNumbers = new HashMap<>();
+
+            inputNumbers.put("一",1);
+            inputNumbers.put("二",2);
+            inputNumbers.put("两",2);
+            inputNumbers.put("三",3);
+            inputNumbers.put("四",4);
+            inputNumbers.put("五",5);
+            inputNumbers.put("六",6);
+            inputNumbers.put("七",7);
+            inputNumbers.put("八",8);
+            inputNumbers.put("九",9);
+            inputNumbers.put("十",10);
+
+            inputNumbers.put("1",1);
+            inputNumbers.put("2",2);
+            inputNumbers.put("3",3);
+            inputNumbers.put("4",4);
+            inputNumbers.put("5",5);
+            inputNumbers.put("6",6);
+            inputNumbers.put("7",7);
+            inputNumbers.put("8",8);
+            inputNumbers.put("9",9);
+            inputNumbers.put("10",10);
+
             int n = 0;
-            for (int i = 0; i < cNumbers.length; i++) {
-                if (input.contains("涩图" + cNumbers[i] + "连")) {
-                    n = i + 1;
+            for (String numberKey : inputNumbers.keySet()) {
+                if (input.contains("涩图" + numberKey + "连")) {
+                    n = inputNumbers.get(numberKey);
                     break;
                 }
             }
