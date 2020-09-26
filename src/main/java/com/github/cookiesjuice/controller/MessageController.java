@@ -27,30 +27,30 @@ public class MessageController {
 
     public Message handlePlainMessage(String input) {
         if (input.contains("涩图")) {
-            Map<String,Integer> inputNumbers = new HashMap<>();
+            Map<String, Integer> inputNumbers = new HashMap<>();
 
-            inputNumbers.put("一",1);
-            inputNumbers.put("二",2);
-            inputNumbers.put("两",2);
-            inputNumbers.put("三",3);
-            inputNumbers.put("四",4);
-            inputNumbers.put("五",5);
-            inputNumbers.put("六",6);
-            inputNumbers.put("七",7);
-            inputNumbers.put("八",8);
-            inputNumbers.put("九",9);
-            inputNumbers.put("十",10);
+            inputNumbers.put("一", 1);
+            inputNumbers.put("二", 2);
+            inputNumbers.put("两", 2);
+            inputNumbers.put("三", 3);
+            inputNumbers.put("四", 4);
+            inputNumbers.put("五", 5);
+            inputNumbers.put("六", 6);
+            inputNumbers.put("七", 7);
+            inputNumbers.put("八", 8);
+            inputNumbers.put("九", 9);
+            inputNumbers.put("十", 10);
 
-            inputNumbers.put("1",1);
-            inputNumbers.put("2",2);
-            inputNumbers.put("3",3);
-            inputNumbers.put("4",4);
-            inputNumbers.put("5",5);
-            inputNumbers.put("6",6);
-            inputNumbers.put("7",7);
-            inputNumbers.put("8",8);
-            inputNumbers.put("9",9);
-            inputNumbers.put("10",10);
+            inputNumbers.put("1", 1);
+            inputNumbers.put("2", 2);
+            inputNumbers.put("3", 3);
+            inputNumbers.put("4", 4);
+            inputNumbers.put("5", 5);
+            inputNumbers.put("6", 6);
+            inputNumbers.put("7", 7);
+            inputNumbers.put("8", 8);
+            inputNumbers.put("9", 9);
+            inputNumbers.put("10", 10);
 
             int n = 0;
             for (String numberKey : inputNumbers.keySet()) {
