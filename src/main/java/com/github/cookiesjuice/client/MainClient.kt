@@ -44,14 +44,14 @@ suspend fun main() {
             if (message[Image] != null) {
                 imgPath = message[Image]!!.url()
             }
-            val respMsg = messageController.handleAtMessage(content, imgPath)
+            val respMsg = messageController.handleAtMessage(content, imgPath, this.sender.id)
             if (respMsg != null) {
                 val replyMsgChain = MessageBuilder.buildFromGroupMessage(this, respMsg)
                 reply(replyMsgChain)
             }
         } else {
             val content = message.content
-            val respMsg = messageController.handlePlainMessage(content)
+            val respMsg = messageController.handlePlainMessage(content, this.sender.id)
             if (respMsg != null) {
                 val replyMsgChain = MessageBuilder.buildFromGroupMessage(this, respMsg)
                 reply(replyMsgChain)

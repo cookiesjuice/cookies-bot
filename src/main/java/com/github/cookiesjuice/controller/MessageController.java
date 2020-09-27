@@ -2,6 +2,7 @@ package com.github.cookiesjuice.controller;
 
 import com.github.cookiesjuice.entity.Tag;
 import com.github.cookiesjuice.response.Message;
+import com.github.cookiesjuice.response.message.At;
 import com.github.cookiesjuice.response.message.Image;
 import com.github.cookiesjuice.response.message.PlainText;
 import com.github.cookiesjuice.service.DeepDanBooruService;
@@ -29,7 +30,7 @@ public class MessageController {
         this.tagLocalizationService = tagLocalizationService;
     }
 
-    public Message handlePlainMessage(String input) {
+    public Message handlePlainMessage(String input, Long senderId) {
         if (input.contains("涩图")) {
             String[] cNumbers = {"一", "二", "三", "四", "五", "六", "七", "八", "九", "十"};
             int n = 0;
@@ -58,22 +59,23 @@ public class MessageController {
         return null;
     }
 
-    public Message handleAtMessage(String input) {
+    public Message handleAtMessage(String input, Long senderId) {
         String result = tencentAPIService.autoChat(input);
         return new Message().put(new PlainText(result));
     }
 
-    public Message handleAtMessage(String input, String imgPath) {
+    public Message handleAtMessage(String input, String imgPath, Long senderId) {
         System.out.println(imgPath);
         if (input.contains("分析") && imgPath != null) {
             Message message = new Message();
+            message.put(new At(senderId));
             List<Tag> tagList = deepDanBooruService.evaluate(imgPath);
             for (Tag tag : tagList) {
                 message.put(new PlainText(tagLocalizationService.translate(tag.getName()) + " : " + tag.getReliability() + "\n"));
             }
             return message;
         } else {
-            return handleAtMessage(input);
+            return handleAtMessage(input, senderId);
         }
     }
 }
