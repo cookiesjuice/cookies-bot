@@ -4,18 +4,19 @@ import com.github.cookiesjuice.entity.Tag;
 import com.github.cookiesjuice.service.DeepDanBooruService;
 import com.github.cookiesjuice.util.HttpUtils;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class DeepDanBooruSerivceImpl implements DeepDanBooruService {
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public List<Tag> evaluate(String imgPath) {
+        String savedPath = UUID.randomUUID().toString();
         if (imgPath.contains("http")) {
-            HttpUtils.downloadFile(imgPath, "temp.setu");
-            imgPath = "temp.setu";
+            HttpUtils.downloadFile(imgPath, savedPath);
+            imgPath = savedPath;
         }
 
         List<String> retList = new ArrayList<>();
@@ -45,6 +46,8 @@ public class DeepDanBooruSerivceImpl implements DeepDanBooruService {
             tagList.add(new Tag(tag, data));
         }
 
+        File savedImg = new File(savedPath);
+        savedImg.delete();
         return tagList;
     }
 }

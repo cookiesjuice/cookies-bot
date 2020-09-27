@@ -13,15 +13,15 @@ public class HttpUtils {
     /**
      * 下载文件到指定目录
      *
-     * @param srcurl   源路径
-     * @param savepath 保存目录
+     * @param srcUrl   源路径
+     * @param savePath 保存目录
      */
-    public static void downloadFile(String srcurl, String savepath) {
+    public static void downloadFile(String srcUrl, String savePath) {
         FileOutputStream fos = null;
         try {
-            fos = new FileOutputStream(savepath);
-            byte[] datas = doGet(srcurl);
-            fos.write(datas);
+            fos = new FileOutputStream(savePath);
+            byte[] data = doGet(srcUrl);
+            fos.write(data);
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -38,15 +38,15 @@ public class HttpUtils {
     /**
      * 发起Get请求
      *
-     * @param httpurl 请求链接
+     * @param httpUrl 请求链接
      * @return 响应数据
      */
-    public static byte[] doGet(String httpurl) {
+    public static byte[] doGet(String httpUrl) {
         HttpURLConnection connection = null;
         byte[] result = null; // 返回结果字符串
         try {
             // 创建远程url连接对象
-            URL url = new URL(httpurl);
+            URL url = new URL(httpUrl);
             // 通过远程url连接对象打开一个连接，强转成httpURLConnection类
             connection = (HttpURLConnection) url.openConnection();
             // 设置连接方式：get
