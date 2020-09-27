@@ -6,6 +6,7 @@ import com.github.cookiesjuice.response.message.Image;
 import com.github.cookiesjuice.response.message.PlainText;
 import com.github.cookiesjuice.service.DeepDanBooruService;
 import com.github.cookiesjuice.service.SetuService;
+import com.github.cookiesjuice.service.TagLocalizationService;
 import com.github.cookiesjuice.service.TencentAPIService;
 
 import java.io.File;
@@ -16,11 +17,16 @@ public class MessageController {
     private final SetuService setuService;
     private final TencentAPIService tencentAPIService;
     private final DeepDanBooruService deepDanBooruService;
+    private final TagLocalizationService tagLocalizationService;
 
-    public MessageController(SetuService setuService, TencentAPIService tencentAPIService, DeepDanBooruService deepDanBooruService) {
+    public MessageController(SetuService setuService,
+                             TencentAPIService tencentAPIService,
+                             DeepDanBooruService deepDanBooruService,
+                             TagLocalizationService tagLocalizationService) {
         this.setuService = setuService;
         this.tencentAPIService = tencentAPIService;
         this.deepDanBooruService = deepDanBooruService;
+        this.tagLocalizationService = tagLocalizationService;
     }
 
     public Message handlePlainMessage(String input) {
@@ -59,11 +65,11 @@ public class MessageController {
 
     public Message handleAtMessage(String input, String imgPath) {
         System.out.println(imgPath);
-        if (input.contains("涩图分析") && imgPath != null) {
+        if (input.contains("分析") && imgPath != null) {
             Message message = new Message();
             List<Tag> tagList = deepDanBooruService.evaluate(imgPath);
             for (Tag tag : tagList) {
-                message.put(new PlainText(tag.getName() + " : " + tag.getReliability() + "\n"));
+                message.put(new PlainText(tagLocalizationService.translate(tag.getName()) + " : " + tag.getReliability() + "\n"));
             }
             return message;
         } else {

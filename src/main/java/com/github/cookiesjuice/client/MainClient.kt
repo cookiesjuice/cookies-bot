@@ -4,6 +4,7 @@ import com.github.cookiesjuice.controller.LoginController
 import com.github.cookiesjuice.controller.MessageController
 import com.github.cookiesjuice.service.impl.DeepDanBooruSerivceImpl
 import com.github.cookiesjuice.service.impl.SetuServiceImpl
+import com.github.cookiesjuice.service.impl.TagLocalizationServiceImpl
 import com.github.cookiesjuice.service.impl.TencentAPIServiceImpl
 import com.github.cookiesjuice.util.ConfigInfo
 import net.mamoe.mirai.Bot
@@ -24,7 +25,10 @@ suspend fun main() {
     val loginController = LoginController()
 
     val messageController = MessageController(
-            SetuServiceImpl(), TencentAPIServiceImpl(), DeepDanBooruSerivceImpl()
+            SetuServiceImpl(),
+            TencentAPIServiceImpl(),
+            DeepDanBooruSerivceImpl(),
+            TagLocalizationServiceImpl()
     )
 
     val qid = loginController.id
