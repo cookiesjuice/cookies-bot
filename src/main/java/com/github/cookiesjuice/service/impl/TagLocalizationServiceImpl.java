@@ -2,10 +2,7 @@ package com.github.cookiesjuice.service.impl;
 
 import com.github.cookiesjuice.service.TagLocalizationService;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.security.SecureClassLoader;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
