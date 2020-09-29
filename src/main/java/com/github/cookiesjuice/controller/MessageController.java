@@ -70,7 +70,7 @@ public class MessageController {
             Message message = new Message();
             message.put(new At(senderId));
             List<Tag> tagList = deepDanBooruService.evaluate(imgPath);
-            StringBuilder tagString = new StringBuilder();
+            StringBuilder tagString = new StringBuilder("\n");
             for (Tag tag : tagList) {
                 tagString.append(tagLocalizationService.translate(tag.getName())).append(" : ").append(tag.getReliability()).append('\n');
             }
