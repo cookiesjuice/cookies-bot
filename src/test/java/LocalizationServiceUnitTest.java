@@ -19,7 +19,7 @@ public class LocalizationServiceUnitTest {
         try{
             tagLocalizationService = new TagLocalizationServiceImpl();
         }catch (Exception e){
-            fail();
+            fail(e.toString());
         }
     }
 

@@ -1,5 +1,6 @@
-package com.github.cookiesjuice.client
+package com.github.cookiesjuice
 
+import com.github.cookiesjuice.client.MessageBuilder
 import com.github.cookiesjuice.controller.LoginController
 import com.github.cookiesjuice.controller.MessageController
 import com.github.cookiesjuice.service.impl.DeepDanBooruSerivceImpl
