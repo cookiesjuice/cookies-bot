@@ -20,7 +20,7 @@ public class DeepDanBooruSerivceImpl implements DeepDanBooruService {
         }
 
         List<String> retList = new ArrayList<>();
-        String[] cmds = {"D:\\Python\\Python38\\Scripts\\deepdanbooru.exe", "evaluate", imgPath, "--project-path", "src/main/resources/DeepDanbooru-cookies-bot"};
+        String[] cmds = {"D:\\Python\\Python38\\Scripts\\deepdanbooru.exe", "evaluate", imgPath, "--project-path", "DeepDanbooru-cookies-bot"};
 
         try {
             Process process = new ProcessBuilder(cmds).start();
@@ -43,7 +43,10 @@ public class DeepDanBooruSerivceImpl implements DeepDanBooruService {
             String[] tagDatas = tagData.split(" ");
             double data = Double.parseDouble(tagDatas[0].replaceAll("[()]", ""));
             String tag = tagDatas[1];
-            tagList.add(new Tag(tag, data));
+            Tag t = new Tag();
+            t.setName(tag);
+            t.setReliability(data);
+            tagList.add(t);
         }
 
         File savedImg = new File(savedPath);

@@ -27,5 +27,7 @@
         <!-- 罗列所有的映射文件 -->
         <mapping resource="Setu.hbm.xml"/>
         <mapping resource="User.hbm.xml"/>
+        <mapping resource="Tag.hbm.xml"/>
+        <mapping resource="Grade.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

@@ -2,17 +2,28 @@ package com.github.cookiesjuice.entity;
 
 import lombok.Data;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @Data
 public class Tag {
     /**
+     * 涩图id
+     */
+    private long id;
+
+    /**
      * 名字
      */
-    private final String name;
+    private String name;
 
     /**
      * 可信度
      */
-    private final double reliability;
+    private double reliability;
 
-
+    /**
+     * 拥有此标签的涩图
+     */
+    private Set<Setu> setus = new HashSet<>();
 }

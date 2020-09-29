@@ -8,21 +8,26 @@
             <generator class="native"/>
         </id>
 
-        <property name="name" type="java.lang.String" column="setu_name"/>
+        <property name="name" type="java.lang.String" column="setu_name" not-null="true"/>
 
         <property name="author" type="java.util.Date" column="setu_author"/>
 
-        <set name="gradeUsers" inverse="true">
+        <set name="tags">
+            <key column="setu_id"/>
+            <many-to-many class="com.github.cookiesjuice.entity.Tag" column="tag_id"/>
+        </set>
+
+        <set name="grades">
+            <key column="setu_id"/>
+            <one-to-many class="com.github.cookiesjuice.entity.Grade"/>
+        </set>
+
+        <set name="favoriteUsers">
             <key column="setu_id"/>
             <many-to-many class="com.github.cookiesjuice.entity.User" column="user_id"/>
         </set>
 
-        <set name="favoriteUsers" inverse="true">
-            <key column="setu_id"/>
-            <many-to-many class="com.github.cookiesjuice.entity.User" column="user_id"/>
-        </set>
-
-        <many-to-one name="uploadUser" class="com.github.cookiesjuice.entity.User" column="setu_id"/>
+        <many-to-one name="uploadUser" class="com.github.cookiesjuice.entity.User" column="user_id"/>
 
         <property name="uploadTime" type="java.util.Date" column="setu_upload_time"/>
     </class>

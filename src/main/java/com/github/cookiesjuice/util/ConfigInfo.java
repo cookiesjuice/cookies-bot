@@ -10,10 +10,6 @@ public class ConfigInfo {
     private static final String CONFIG_PATH = "config.json";
     public static JSONObject config;
 
-    static {
-
-    }
-
     public static int init() {
         StringBuilder jsonString = new StringBuilder();
         try (BufferedReader in = new BufferedReader(new InputStreamReader(Objects.requireNonNull(ConfigInfo.class.getClassLoader().getResourceAsStream(CONFIG_PATH)), StandardCharsets.UTF_8))) {

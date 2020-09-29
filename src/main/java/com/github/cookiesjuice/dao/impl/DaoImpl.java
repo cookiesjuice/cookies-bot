@@ -4,10 +4,8 @@ import com.github.cookiesjuice.dao.Dao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
-import org.hibernate.service.ServiceRegistry;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
@@ -26,8 +24,9 @@ public abstract class DaoImpl<T> implements Dao<T> {
             // 采用默认的hibernate.cfg.xml来启动一个Configuration的实例
             Configuration cfg = new Configuration().configure();
             // 以Configuration实例来创建SessionFactory实例
-            ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(cfg.getProperties()).build();
-            sessionFactory = cfg.buildSessionFactory(serviceRegistry);
+//            ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(cfg.getProperties()).build();
+//            sessionFactory = cfg.buildSessionFactory(serviceRegistry);
+            sessionFactory = cfg.buildSessionFactory();
         } catch (Throwable ex) {
             System.err.println("Initial SessionFactory creation failed." + ex);
             throw new ExceptionInInitializerError(ex);
@@ -35,7 +34,7 @@ public abstract class DaoImpl<T> implements Dao<T> {
     }
 
     @SuppressWarnings("unchecked")
-    public DaoImpl(){
+    public DaoImpl() {
         this.tClass = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
 
     }

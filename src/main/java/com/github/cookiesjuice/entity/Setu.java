@@ -27,9 +27,14 @@ public class Setu {
     private String author;
 
     /**
+     * 此涩图的标签
+     */
+    private Set<Tag> tags = new HashSet<>();
+
+    /**
      * 用户的评分
      */
-    private Set<User> gradeUsers = new HashSet<>();
+    private Set<Grade> grades = new HashSet<>();
 
     /**
      * 喜爱此涩图的用户

@@ -18,7 +18,7 @@ public class User {
     /**
      * 参与了评分的涩图
      */
-    private Set<Setu> gradeSetus = new HashSet<>();
+    private Set<Grade> grades = new HashSet<>();
 
     /**
      * 喜欢的涩图

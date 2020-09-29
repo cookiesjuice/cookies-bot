@@ -8,17 +8,17 @@
             <generator class="native"/>
         </id>
 
-        <set name="gradeSetus">
+<!--        <set name="grades">-->
+<!--            <key column="user_id"/>-->
+<!--            <one-to-many class="com.github.cookiesjuice.entity.Grade"/>-->
+<!--        </set>-->
+
+        <set name="favoriteSetus" inverse="true" cascade="save-update">
             <key column="user_id"/>
             <many-to-many class="com.github.cookiesjuice.entity.Setu" column="setu_id"/>
         </set>
 
-        <set name="favoriteSetus">
-            <key column="user_id"/>
-            <many-to-many class="com.github.cookiesjuice.entity.Setu" column="setu_id"/>
-        </set>
-
-        <set name="uploadSetus">
+        <set name="uploadSetus" inverse="true" cascade="save-update">
             <key column="user_id"/>
             <one-to-many class="com.github.cookiesjuice.entity.Setu"/>
         </set>
