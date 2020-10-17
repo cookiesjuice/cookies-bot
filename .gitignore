@@ -3,3 +3,8 @@
 config.json
 src/main/resources/config.json
 /target
+/setu
+/log
+/mirai-console/logs
+/mirai-console/data
+/DeepDanbooru-cookies-bot
