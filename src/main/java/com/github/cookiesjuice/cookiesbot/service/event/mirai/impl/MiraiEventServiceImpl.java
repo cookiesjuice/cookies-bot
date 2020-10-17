@@ -61,8 +61,13 @@ public class MiraiEventServiceImpl implements MiraiEventService {
                 handTempMessage(new TempMessage(jsonObject));
                 break;
         }
-
-        closeSession();
+        try {
+            Thread.sleep(3 * 1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } finally {
+            closeSession();
+        }
     }
 
     /**
