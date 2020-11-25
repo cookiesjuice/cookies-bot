@@ -1,0 +1,6 @@
+key,meow,english
+cmd_help_info,使用help命令查看帮助\n例：%shelp [模块名]%s\n“[]”中的参数为可选参数,english_cmd_help_info
+cmd_help_head,各模块说明: \n%s,english_cmd_help_head
+cmd_help_line,\n---------\n,english_cmd_help_line
+cmd_err1,语法有误！\n%s,english_cmd_err1
+cmd_err2,没有找到此命令！\n%s,english_cmd_err2

@@ -1,0 +1,37 @@
+spring:
+  application:
+    name: cookies-bot
+  datasource:
+    url: jdbc:mysql://192.168.137.137:3306/db_bot?useUnicode=true&characterEncoding=utf8&useSSL=false
+    username: root
+    password: root
+    driverClassName: com.mysql.cj.jdbc.Driver
+  jpa:
+    database: mysql
+    show-sql: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+
+app:
+  bot:
+    qq: 1234567890
+    password: 123456abc.
+    cmd: 🍪
+  setu:
+    user:
+      level-exp: 0, 4, 16, 64, 256, 1024, 4096, 16384, 65536, 262144, 1048576
+      speak-exp: 1
+      speak-exp-max-of-day: 1024
+    setu:
+      level-setu-max-of-day: 16, 24, 40, 72, 136, 264, 520, 1032, 2056, 4104, 8200
+      uploadExp: 16
+  lang:
+    type: meow
+    path: lang/langs.csv
+    on-tag-localization: true
+    localization-file-path: lang/tags.csv
+
+
