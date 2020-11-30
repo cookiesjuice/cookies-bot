@@ -69,6 +69,22 @@ public class SetuServiceImpl implements SetuService {
     }
 
     @Override
+    public boolean delete(Setu setu) {
+        File file = getFile(setu);
+        if (file != null && file.delete()) {
+            setuRepository.delete(setu);
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean delete(Long id) {
+        Setu setu = find(id);
+        return setu != null && delete(setu);
+    }
+
+    @Override
     public List<Setu> random(int num) {
         long count = setuRepository.count();
         if (count == 0) {

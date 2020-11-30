@@ -44,6 +44,22 @@ public interface SetuService {
     Setu upload(User user, File file);
 
     /**
+     * 删除一张涩图
+     *
+     * @param setu 要删除的涩图
+     * @return boolean
+     */
+    boolean delete(Setu setu);
+
+    /**
+     * 删除一张涩图
+     *
+     * @param id 要删除的涩图的id，存在则删除并返回true，否则返回false
+     * @return boolean
+     */
+    boolean delete(Long id);
+
+    /**
      * 随机num张涩图
      *
      * @param num 几张

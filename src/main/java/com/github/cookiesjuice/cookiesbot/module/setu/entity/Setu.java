@@ -54,7 +54,7 @@ public class Setu {
     /**
      * 喜爱此涩图的用户
      */
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(name = "setu_user_favorite_setu",
             joinColumns = {@JoinColumn(name = "setu", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "user", referencedColumnName = "id")})
