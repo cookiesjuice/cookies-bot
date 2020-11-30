@@ -2,6 +2,7 @@ package com.github.cookiesjuice.cookiesbot.control
 
 import com.github.cookiesjuice.cookiesbot.config.setu.SetuProperties
 import com.github.cookiesjuice.cookiesbot.config.setu.UserProperties
+import com.github.cookiesjuice.cookiesbot.module.cmd.service.CmdService
 import com.github.cookiesjuice.cookiesbot.module.lang.service.TagLocalizationService
 import com.github.cookiesjuice.cookiesbot.module.setu.entity.Setu
 import com.github.cookiesjuice.cookiesbot.module.setu.service.SetuService
@@ -24,6 +25,7 @@ class SetuListenControl(
         val tagLocalizationService: TagLocalizationService,
         val setuProperties: SetuProperties,
         val userProperties: UserProperties,
+        val cmdService: CmdService
 ) {
     /**
      * 上传涩图 | 获取一张指定id的涩图 | 随机获取一张或多张涩图
@@ -312,39 +314,13 @@ class SetuListenControl(
         }
     }
 
-    private fun Bot.cmdtest() {
+    private fun Bot.cmd() {
         subscribeFriendMessages {
-//            contains(botProperties.cmd) {
-//                val pattern = Pattern.compile("(${botProperties.cmd})(\\S+)([\\s+\\S]*)") //🍪 cmd arg1 arg2 arg3...
-//                val matcher = pattern.matcher(message.contentToString())
-//                if (matcher.find()) {
-//                    val cmd = matcher.group(2)
-//                    val args = matcher.group(3).split("\\s")
-//                }
-//                val user = userService.findOrSave(sender.id)
-//                if (user.adminLevel > 10) {
-//
-//                }
-//            }
-            sentBy(2394495949) {
-                contains("init setu") {
-                    reply("正在初始化涩图库喵~")
-                    val setuLibPath = "/home/imgs"
-                    val setuPaths = File(setuLibPath).list()
-                    if (setuPaths != null) {
-                        val user = userService.findOrSave(sender.id)
-                        var i = 0
-                        for (path in setuPaths) {
-                            val setuFile = File("$setuLibPath/$path")
-                            if (setuFile.exists()) {
-                                setuService.upload(user, setuFile)
-                                reply("初始化进度: ${++i}/${setuPaths.size}")
-                            }
-                        }
-                        reply("初始化完成喵~")
-                    } else {
-                        reply("涩图库读取失败喵~")
-                    }
+            always {
+                if(message.contentToString().startsWith("$")) {
+                    val reply = cmdService.handleCmd(message.contentToString().substring(1),
+                    sender.id)
+                    quoteReply(reply)
                 }
             }
         }
@@ -358,6 +334,6 @@ class SetuListenControl(
 
         bot.speak()
 
-        bot.cmdtest()
+        bot.cmd()
     }
 }
