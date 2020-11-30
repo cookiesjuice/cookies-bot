@@ -28,6 +28,7 @@ app:
     setu:
       level-setu-max-of-day: 16, 24, 40, 72, 136, 264, 520, 1032, 2056, 4104, 8200
       uploadExp: 16
+      setuMax: 10
   lang:
     type: meow
     path: lang/langs.csv

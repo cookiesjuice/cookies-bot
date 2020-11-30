@@ -14,6 +14,11 @@ public class SetuProperties {
      */
     private int uploadExp;
 
+    /**
+     * 涩图x连最大值
+     */
+    private int setuMax;
+
     public int[] getLevelSetuMaxOfDay() {
         return levelSetuMaxOfDay;
     }
@@ -28,5 +33,13 @@ public class SetuProperties {
 
     public void setUploadExp(int uploadExp) {
         this.uploadExp = uploadExp;
+    }
+
+    public int getSetuMax() {
+        return setuMax;
+    }
+
+    public void setSetuMax(int setuMax) {
+        this.setuMax = setuMax;
     }
 }

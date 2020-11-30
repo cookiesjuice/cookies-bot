@@ -4,37 +4,32 @@ import com.github.cookiesjuice.cookiesbot.module.cmd.UnauthorizedException;
 import com.github.cookiesjuice.cookiesbot.module.cmd.service.AuthService;
 import com.github.cookiesjuice.cookiesbot.module.cmd.service.CmdService;
 import com.github.cookiesjuice.cookiesbot.module.setu.service.SetuService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @Service
 public class CmdServiceImpl implements CmdService {
 
-    @Autowired
-    private AuthService authService;
-    @Autowired
-    private SetuService setuService;
+    private final AuthService authService;
+    private final SetuService setuService;
+
+    public CmdServiceImpl(AuthService authService, SetuService setuService) {
+        this.authService = authService;
+        this.setuService = setuService;
+    }
 
     @Override
-    public String handleCmd(String cmd, Long userId) {
-        String[] args = cmd.split("\\s");
-        if (args.length == 0) {
-            return "请输入指令";
-        }
-        String program = args[0];
+    public String handleCmd(String cmd, String[] args, Long userId) {
         try {
-            switch (program) {
+            switch (cmd) {
                 case "reboot":
                     return reboot(userId);
                 case "rm":
                     return rm(args, userId);
                 default:
-                    return String.format("未知指令%s", program);
+                    return String.format("未知指令%s", cmd);
             }
         } catch (Exception e) {
             return e.getMessage();
@@ -57,22 +52,22 @@ public class CmdServiceImpl implements CmdService {
     private String rm(String[] args, Long userId) throws UnauthorizedException {
         List<Long> success = new ArrayList<>();
         List<Long> failure = new ArrayList<>();
-        for(int i = 1; i < args.length; i++) {
+        for (int i = 1; i < args.length; i++) {
             Long setuId = Long.parseLong(args[i]);
-            if(!isUploader(setuId, userId)) {
+            if (!isUploader(setuId, userId)) {
                 authService.requireSudo(userId);
             }
-            if(setuService.delete(setuId)) {
+            if (setuService.delete(setuId)) {
                 success.add(setuId);
             } else {
                 failure.add(setuId);
             }
         }
         String response = "";
-        if(!success.isEmpty()) {
+        if (!success.isEmpty()) {
             response += success.toString() + "删除成功。";
         }
-        if(!failure.isEmpty()) {
+        if (!failure.isEmpty()) {
             response += failure.toString() + "删除失败。";
         }
         return response;

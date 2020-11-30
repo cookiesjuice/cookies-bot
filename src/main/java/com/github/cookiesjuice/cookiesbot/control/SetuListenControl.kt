@@ -1,5 +1,6 @@
 package com.github.cookiesjuice.cookiesbot.control
 
+import com.github.cookiesjuice.cookiesbot.config.BotProperties
 import com.github.cookiesjuice.cookiesbot.config.setu.SetuProperties
 import com.github.cookiesjuice.cookiesbot.config.setu.UserProperties
 import com.github.cookiesjuice.cookiesbot.module.cmd.service.CmdService
@@ -9,7 +10,6 @@ import com.github.cookiesjuice.cookiesbot.module.setu.service.SetuService
 import com.github.cookiesjuice.cookiesbot.module.setu.service.UserService
 import com.github.cookiesjuice.cookiesbot.utils.HttpUtils
 import net.mamoe.mirai.Bot
-import net.mamoe.mirai.event.subscribeFriendMessages
 import net.mamoe.mirai.event.subscribeGroupMessages
 import net.mamoe.mirai.event.subscribeMessages
 import net.mamoe.mirai.message.data.*
@@ -20,12 +20,13 @@ import java.util.regex.Pattern
 
 @Controller
 class SetuListenControl(
+        val cmdService: CmdService,
         val setuService: SetuService,
         val userService: UserService,
         val tagLocalizationService: TagLocalizationService,
+        val botProperties: BotProperties,
         val setuProperties: SetuProperties,
         val userProperties: UserProperties,
-        val cmdService: CmdService
 ) {
     /**
      * 上传涩图 | 获取一张指定id的涩图 | 随机获取一张或多张涩图
@@ -34,7 +35,7 @@ class SetuListenControl(
         var isHandle = false
         subscribeGroupMessages {
             contains("涩图") {
-                val matcher = Pattern.compile("([上传]*)(涩图\\s*)([\\d+]*)([\\s*连]*)").matcher(message.content)
+                val matcher = Pattern.compile("(上传)*(涩图[\\s]*)([\\d+]*)(\\s*连)*").matcher(message.content)
                 if (matcher.find()) {
                     val user = userService.findOrSave(sender.id)
                     val everyday = userService.getToday(user)
@@ -42,11 +43,14 @@ class SetuListenControl(
                     val max = levelSetuMax[user.level]
                     var isMaximum = everyday.setuCount >= max
 
-                    val g1 = matcher.group(1) != ""
-                    val g3 = matcher.group(3) != ""
-                    val g4 = matcher.group(4).trim() != ""
+                    val g1 = matcher.group(1) ?: ""
+                    val g3 = matcher.group(3) ?: ""
+                    val g4 = matcher.group(4) ?: ""
+                    val hasG1 = g1 != ""
+                    val hasG3 = g3 != ""
+                    val hasG4 = g4.trim() != ""
 
-                    if (g1) {//上传涩图
+                    if (hasG1) {//上传涩图
                         val image = message[Image]
                         if (image != null) {
                             val url = image.url()
@@ -77,34 +81,44 @@ class SetuListenControl(
                             quoteReply("上传个喵喵?没有看到涩图喵~")
                         }
 
-                    } else if (g3 && g4 && !isMaximum) { //涩图xxx连
-                        val num = matcher.group(3).toInt()
-                        if (num + everyday.setuCount > max) {
-                            isMaximum = true
-                        } else {
-                            val setuList = setuService.random(num)
-                            if (setuList != null && setuList.size > 0) {
-                                var reply = messageChainOf()
-                                for (setu in setuList) {
-                                    if (setu != null) {
-                                        val setuFile = setuService.getFile(setu)
-                                        if (setuFile != null) {
-                                            val image: Image = uploadImage(setuFile)
-                                            reply = reply.plus(image)
+                    } else if (hasG3 && hasG4 && !isMaximum) { //涩图xxx连
+                        try {
+                            val num = g3.toInt()
+                            if (num > setuProperties.setuMax) {
+                                quoteReply("最多只能连续${setuProperties.setuMax}张涩图喵~")
+                            } else if (num + everyday.setuCount > max) {
+                                isMaximum = true
+                            } else {
+                                val setuList = setuService.random(num)
+                                if (setuList != null && setuList.size > 0) {
+                                    var reply = messageChainOf()
+                                    for (setu in setuList) {
+                                        if (setu != null) {
+                                            val setuFile = setuService.getFile(setu)
+                                            if (setuFile != null) {
+                                                val image: Image = uploadImage(setuFile)
+                                                reply = reply.plus(image)
+                                            }
                                         }
                                     }
+                                    userService.addSetuCount(everyday, num)
+                                    quoteReply(reply)
+                                } else {
+                                    throw NumberFormatException()
                                 }
-                                userService.addSetuCount(everyday, num)
-                                quoteReply(reply)
-                            } else {
-                                quoteReply("没有找到涩图喵~")
                             }
+                        } catch (_: NumberFormatException) {
+                            quoteReply("没有找到涩图喵~")
                         }
                     } else if (!isMaximum) { //涩图
                         //如果没超过此等级每日获取次数
-                        val setu: Setu? = if (g3) { //涩图xxx 获取指定涩图
-                            val id = matcher.group(3).toLong()
-                            setuService.find(id)
+                        val setu: Setu? = if (hasG3) { //涩图xxx 获取指定涩图
+                            try {
+                                val id = g3.toLong()
+                                setuService.find(id)
+                            } catch (_: NumberFormatException) {
+                                null
+                            }
                         } else {
                             setuService.random()
                         }
@@ -251,7 +265,8 @@ class SetuListenControl(
         }
     }
 
-    private fun Bot.info() {
+    private fun Bot.info(): Boolean {
+        var isHandle = false
         subscribeMessages {
             always {
                 val content = message.contentToString()
@@ -280,12 +295,17 @@ class SetuListenControl(
                     val setuCount = "今日涩图/今日上限:${everyday.setuCount}/$max\n"
 
                     quoteReply(info + favorites + grades + setuCount)
+                    isHandle = true
                 } else {
                     val pattern = Pattern.compile("(setuinfo\\s*)(\\d+)")
                     val matcher = pattern.matcher(message.contentToString())
                     if (matcher.find()) {
-                        val id = matcher.group(2).toLong()
-                        val setu = setuService.find(id)
+                        val setu = try {
+                            val id = matcher.group(2).toLong()
+                            setuService.find(id)
+                        } catch (_: NumberFormatException) {
+                            null
+                        }
                         if (setu != null) {
                             val info = "id:${setu.id}\n" +
                                     "作者:${setu.author}\n" +
@@ -308,32 +328,44 @@ class SetuListenControl(
                         } else {
                             quoteReply("没有找到涩图喵~")
                         }
+                        isHandle = true
                     }
                 }
             }
         }
+        return isHandle
     }
 
-    private fun Bot.cmd() {
-        subscribeFriendMessages {
+    private fun Bot.cmd(): Boolean {
+        var isHandle = false
+        subscribeMessages {
             always {
-                if(message.contentToString().startsWith("$")) {
-                    val reply = cmdService.handleCmd(message.contentToString().substring(1),
-                    sender.id)
+                val pattern = Pattern.compile("(${botProperties.cmd})(\\S+)([\\s+\\S]*)")
+                val matcher = pattern.matcher(message.content)
+                if (matcher.find()) {
+                    val cmd = matcher.group(2)
+                    val args = arrayListOf<String>()
+                    matcher.group(3).split("\\s".toRegex()).forEach { s ->
+                        if (s != "") {
+                            args.add(s)
+                        }
+                    }
+                    val reply = cmdService.handleCmd(cmd, args.toTypedArray(), sender.id)
                     quoteReply(reply)
+                    isHandle = true
                 }
             }
         }
+        return isHandle
     }
 
     fun listen(bot: Bot) {
-        if (!bot.reply())
-            if (!bot.setu())
-                if (!bot.evaluate())
-                    bot.info()
-
         bot.speak()
 
-        bot.cmd()
+        if (bot.cmd()) return
+        if (bot.info()) return
+        if (bot.reply()) return
+        if (bot.setu()) return
+        if (bot.evaluate()) return
     }
 }

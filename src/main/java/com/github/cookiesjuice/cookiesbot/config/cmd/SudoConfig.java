@@ -1,12 +1,10 @@
 package com.github.cookiesjuice.cookiesbot.config.cmd;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Component
-@ConfigurationProperties(prefix = "cmd")
+@ConfigurationProperties(prefix = "app.cmd")
 public class SudoConfig {
     private List<Long> sudoers;
 
