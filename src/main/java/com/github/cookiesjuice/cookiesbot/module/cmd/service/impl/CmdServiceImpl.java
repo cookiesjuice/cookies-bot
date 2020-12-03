@@ -52,8 +52,9 @@ public class CmdServiceImpl implements CmdService {
     private String rm(String[] args, Long userId) throws UnauthorizedException {
         List<Long> success = new ArrayList<>();
         List<Long> failure = new ArrayList<>();
-        for (int i = 1; i < args.length; i++) {
-            Long setuId = Long.parseLong(args[i]);
+        if (args.length == 0) return "参数不能为空喵~";
+        for (String arg : args) {
+            Long setuId = Long.parseLong(arg);
             if (!isUploader(setuId, userId)) {
                 authService.requireSudo(userId);
             }
@@ -65,10 +66,10 @@ public class CmdServiceImpl implements CmdService {
         }
         String response = "";
         if (!success.isEmpty()) {
-            response += success.toString() + "删除成功。";
+            response += success.toString() + "删除成功喵~";
         }
         if (!failure.isEmpty()) {
-            response += failure.toString() + "删除失败。";
+            response += failure.toString() + "删除失败喵~";
         }
         return response;
     }
