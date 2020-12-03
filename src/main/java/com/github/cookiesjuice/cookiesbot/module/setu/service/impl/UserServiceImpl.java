@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public synchronized void addExp(User user, long exp) {
+    public synchronized void changeExp(User user, long exp) {
         long addexp = user.getExp() + exp;
         int level = user.getLevel();
         int[] levelExp = userProperties.getLevelExp();
