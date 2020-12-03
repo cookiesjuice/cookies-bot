@@ -61,13 +61,13 @@ class SetuListenControl(
                             try {
                                 val setu = setuService.upload(user, tempFile)
                                 if (setu != null) {
-                                    quoteReply("上传成功喵~增加[${setuProperties.uploadExp}]点经验")
+                                    quoteReply("id：${setu.id}\n上传成功喵~增加[${setuProperties.uploadExp}]点经验")
                                     var info = "id：${setu.id}\n分析标签(标签名:可信度)：\n\n"
                                     for (evaluate in setu.evaluates) {
                                         info += "${tagLocalizationService.translate(evaluate.tag.name)} : ${evaluate.reliability}\n"
                                     }
                                     quoteReply(info)
-                                    userService.addExp(user, setuProperties.uploadExp.toLong())
+                                    userService.changeExp(user, setuProperties.uploadExp.toLong())
                                 } else {
                                     quoteReply("上传失败惹~涩图被曲奇吃掉惹喵~")
                                 }
@@ -256,7 +256,7 @@ class SetuListenControl(
                 //每次发言都会增加经验
                 //如果发言加经验的次数没超过配置的最大值
                 if (everyday.speakCount < userProperties.speakExpMaxOfDay) {
-                    userService.addExp(user, userProperties.speakExp.toLong())
+                    userService.changeExp(user, userProperties.speakExp.toLong())
                 }
 
                 //增加发言计数
@@ -340,7 +340,7 @@ class SetuListenControl(
         var isHandle = false
         subscribeMessages {
             always {
-                val pattern = Pattern.compile("(${botProperties.cmd})(\\S+)([\\s+\\S]*)")
+                val pattern = Pattern.compile("^(${botProperties.cmd})(\\S+)([\\s+\\S]*)")
                 val matcher = pattern.matcher(message.content)
                 if (matcher.find()) {
                     val cmd = matcher.group(2)

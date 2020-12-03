@@ -28,7 +28,7 @@ public interface UserService {
      * @param user user
      * @param exp  exp
      */
-    void addExp(User user, long exp);
+    void changeExp(User user, long exp);
 
     /**
      * 获得用户今日数据
