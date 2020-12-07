@@ -4,10 +4,10 @@ import com.github.cookiesjuice.cookiesbot.config.BotProperties
 import com.github.cookiesjuice.cookiesbot.config.setu.SetuProperties
 import com.github.cookiesjuice.cookiesbot.config.setu.UserProperties
 import com.github.cookiesjuice.cookiesbot.module.cmd.service.CmdService
-import com.github.cookiesjuice.cookiesbot.module.lang.service.TagLocalizationService
 import com.github.cookiesjuice.cookiesbot.module.setu.entity.Setu
 import com.github.cookiesjuice.cookiesbot.module.setu.service.SetuService
 import com.github.cookiesjuice.cookiesbot.module.setu.service.UserService
+import com.github.cookiesjuice.cookiesbot.module.setu.service.impl.ImageServiceImpl
 import com.github.cookiesjuice.cookiesbot.utils.HttpUtils
 import net.mamoe.mirai.Bot
 import net.mamoe.mirai.event.subscribeGroupMessages
@@ -23,7 +23,7 @@ class SetuListenControl(
         val cmdService: CmdService,
         val setuService: SetuService,
         val userService: UserService,
-        val tagLocalizationService: TagLocalizationService,
+        val imageService: ImageServiceImpl,
         val botProperties: BotProperties,
         val setuProperties: SetuProperties,
         val userProperties: UserProperties,
@@ -54,28 +54,33 @@ class SetuListenControl(
                         val image = message[Image]
                         if (image != null) {
                             val url = image.url()
-                            val saveName = UUID.randomUUID().toString()
+                            val path = File("temp")
+                            if (!path.exists()) {
+                                path.mkdir()
+                            }
+                            val saveName = "$path/${UUID.randomUUID()}"
                             HttpUtils.downloadFile(url, saveName)
                             val tempFile = File(saveName)
                             quoteReply("正在上传中喵~")
                             try {
                                 val setu = setuService.upload(user, tempFile)
                                 if (setu != null) {
-                                    quoteReply("id：${setu.id}\n上传成功喵~增加[${setuProperties.uploadExp}]点经验")
-                                    var info = "id：${setu.id}\n分析标签(标签名:可信度)：\n\n"
-                                    for (evaluate in setu.evaluates) {
-                                        info += "${tagLocalizationService.translate(evaluate.tag.name)} : ${evaluate.reliability}\n"
+                                    val msg = PlainText("上传成功喵~增加[${setuProperties.uploadExp}]点经验~\n涩图ID：${setu.id}\n")
+
+                                    val file = imageService.evaluates(setu.evaluates)
+                                    if (file != null) {
+                                        quoteReply(msg.plus("分析标签：\n").plus(uploadImage(file)))
+                                        file.delete()
+                                    } else {
+                                        quoteReply(msg.plus("哎呀~分析结果被曲奇吃掉惹喵~"))
                                     }
-                                    quoteReply(info)
+
                                     userService.changeExp(user, setuProperties.uploadExp.toLong())
                                 } else {
                                     quoteReply("上传失败惹~涩图被曲奇吃掉惹喵~")
                                 }
                             } finally {
-                                if (!tempFile.delete()) {
-                                    System.gc()
-                                    tempFile.delete()
-                                }
+                                tempFile.delete()
                             }
                         } else {
                             quoteReply("上传个喵喵?没有看到涩图喵~")
@@ -226,17 +231,26 @@ class SetuListenControl(
         subscribeGroupMessages {
             has<Image> {
                 if (message.contentToString().contains("分析")) {
-                    val saveName = UUID.randomUUID().toString()
+                    val path = File("temp")
+                    if (!path.exists()) {
+                        path.mkdir()
+                    }
+                    val saveName = "$path/${UUID.randomUUID()}"
                     HttpUtils.downloadFile(it.url(), saveName)
                     val tempFile = File(saveName)
                     quoteReply("正在分析中喵~")
                     val evaluateList = setuService.evaluate(tempFile.path)
                     tempFile.delete()
-                    var info = "分析完成喵~分析标签(标签名:可信度)\n"
-                    for (evaluate in evaluateList) {
-                        info += "${tagLocalizationService.translate(evaluate.tag.name)} : ${evaluate.reliability}\n"
+                    val info = PlainText("分析完成喵~\n")
+
+                    val file = imageService.evaluates(evaluateList)
+                    if (file != null) {
+                        quoteReply(info.plus(uploadImage(file)))
+                        file.delete()
+                    } else {
+                        quoteReply("哎呀~分析结果被曲奇吃掉惹喵~")
                     }
-                    quoteReply(info)
+
                     isHandle = true
                 }
             }
@@ -270,31 +284,15 @@ class SetuListenControl(
         subscribeMessages {
             always {
                 val content = message.contentToString()
-                val line = "\n\uD83C\uDF6A\uD83C\uDF6A\uD83C\uDF6A\uD83C\uDF6A\uD83C\uDF6A\uD83C\uDF6A\uD83C\uDF6A\uD83C\uDF6A\n"
                 if (content.contains("myinfo")) {
                     val user = userService.findOrSave(sender.id)
-
-                    val levelExp = userProperties.levelExp
-                    val exp = if (user.level < levelExp.size - 1) "/${levelExp[user.level + 1]}" else ""
-
-                    val info = "id:${user.id}\n" +
-                            "等级:${user.level}\n" +
-                            "经验:${user.exp}$exp\n" +
-                            "涩币:${user.scoin}$line"
-
-                    var favorites = "收藏的涩图(涩图ID):{\n"
-                    user.favoriteSetus.forEach { favorites += "${it.id}\n" }
-                    favorites += "}$line"
-
-                    var grades = "参与的评分(涩图ID->评分):{\n"
-                    user.grades.forEach { grades += "${it.setu.id}->${it.score}\n" }
-                    grades += "}$line"
-
-                    val everyday = userService.getToday(user)
-                    val max = setuProperties.levelSetuMaxOfDay[user.level]
-                    val setuCount = "今日涩图/今日上限:${everyday.setuCount}/$max\n"
-
-                    quoteReply(info + favorites + grades + setuCount)
+                    val file = imageService.user(user)
+                    if (file != null) {
+                        quoteReply(uploadImage(file))
+                        file.delete()
+                    } else {
+                        quoteReply("哎呀~消息被曲奇吃掉惹喵~")
+                    }
                     isHandle = true
                 } else {
                     val pattern = Pattern.compile("(setuinfo\\s*)(\\d+)")
@@ -307,24 +305,13 @@ class SetuListenControl(
                             null
                         }
                         if (setu != null) {
-                            val info = "id:${setu.id}\n" +
-                                    "作者:${setu.author}\n" +
-                                    "上传者:${setu.uploadUser.id}\n" +
-                                    "上传时间：${setu.uploadTime}$line"
-
-                            var evaluates = "分析标签(标签名:可信度):{\n"
-                            setu.evaluates.forEach { evaluates += "${tagLocalizationService.translate(it.tag.name)} : ${it.reliability}\n" }
-                            evaluates += "}$line"
-
-                            var grades = "评分详情(用户ID->分数):{\n"
-                            setu.grades.forEach { grades += "${it.user.id}->${it.score}\n" }
-                            grades += "}$line"
-
-                            var favorites = "喜爱此涩图的用户(用户ID):{\n"
-                            setu.favoriteUsers.forEach { favorites += "${it.id}\n" }
-                            favorites += "}"
-
-                            quoteReply(info + evaluates + grades + favorites)
+                            val file = imageService.setu(setu)
+                            if (file != null) {
+                                quoteReply(uploadImage(file))
+                                file.delete()
+                            } else {
+                                quoteReply("哎呀~消息被曲奇吃掉惹喵~")
+                            }
                         } else {
                             quoteReply("没有找到涩图喵~")
                         }

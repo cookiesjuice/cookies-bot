@@ -14,11 +14,6 @@ public interface SetuService {
     String SETU_PATH = "setu";
 
     /**
-     * 本地化文件路径
-     */
-    String LOCALIZATION_FILE_PATH = "tags.csv";
-
-    /**
      * 查找一张涩图,没有找到则返回null
      *
      * @param id id

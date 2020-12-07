@@ -11,10 +11,12 @@ import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan
 import org.springframework.boot.runApplication
+import org.springframework.scheduling.annotation.EnableScheduling
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
+@EnableScheduling
 @ConfigurationPropertiesScan
 @SpringBootApplication
 class CookiesBotApplication(val botProperties: BotProperties, val setuControl: SetuListenControl) : CommandLineRunner {

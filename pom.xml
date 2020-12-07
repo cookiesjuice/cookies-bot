@@ -96,6 +96,13 @@
         </dependency>
         <!--javacsv-end-->
 
+        <!--xhtmlrenderer-begin-->
+        <dependency>
+            <groupId>org.xhtmlrenderer</groupId>
+            <artifactId>core-renderer</artifactId>
+            <version>R8</version>
+        </dependency>
+
     </dependencies>
 
     <build>

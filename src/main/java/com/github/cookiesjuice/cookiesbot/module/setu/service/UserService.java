@@ -23,10 +23,10 @@ public interface UserService {
     User findOrSave(long id);
 
     /**
-     * 给用户增加经验
+     * 改变用户经验并更新等级
      *
      * @param user user
-     * @param exp  exp
+     * @param exp  如果exp为负数则会减少经验
      */
     void changeExp(User user, long exp);
 

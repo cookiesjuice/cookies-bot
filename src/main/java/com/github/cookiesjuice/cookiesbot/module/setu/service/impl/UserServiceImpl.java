@@ -43,11 +43,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public synchronized void changeExp(User user, long exp) {
+        if (exp == 0) return;
+
         long addexp = user.getExp() + exp;
-        int level = user.getLevel();
+        int level = exp > 0 ? user.getLevel() : 0;
         int[] levelExp = userProperties.getLevelExp();
 
-        for (int lv = level + 1; lv < levelExp.length - 1; lv++) {
+        for (int lv = level; lv < levelExp.length - 1; lv++) {
             if (addexp >= levelExp[lv]) {
                 user.setLevel(lv);
             } else break;
