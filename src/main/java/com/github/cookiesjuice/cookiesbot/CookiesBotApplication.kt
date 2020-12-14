@@ -15,17 +15,22 @@ import org.springframework.scheduling.annotation.EnableScheduling
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.system.exitProcess
 
 @EnableScheduling
 @ConfigurationPropertiesScan
 @SpringBootApplication
 class CookiesBotApplication(val botProperties: BotProperties, val setuControl: SetuListenControl) : CommandLineRunner {
     override fun run(vararg args: String?) = runBlocking {
-        val bot = Bot(botProperties.qq, botProperties.password).alsoLogin()
+        try {
+            val bot = Bot(botProperties.qq, botProperties.password).alsoLogin()
 
-        setuControl.listen(bot)
+            setuControl.listen(bot)
 
-        bot.join()
+            bot.join()
+        } catch (e: Exception) {
+            exitProcess(0)
+        }
     }
 }
 
