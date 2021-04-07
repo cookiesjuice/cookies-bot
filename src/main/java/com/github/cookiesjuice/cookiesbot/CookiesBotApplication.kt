@@ -4,9 +4,7 @@ import com.github.cookiesjuice.cookiesbot.config.BotProperties
 import com.github.cookiesjuice.cookiesbot.control.SetuListenControl
 import com.github.cookiesjuice.cookiesbot.utils.LogUtils
 import kotlinx.coroutines.runBlocking
-import net.mamoe.mirai.Bot
-import net.mamoe.mirai.alsoLogin
-import net.mamoe.mirai.join
+import net.mamoe.mirai.BotFactory
 import org.springframework.boot.CommandLineRunner
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.context.properties.ConfigurationPropertiesScan
@@ -23,11 +21,9 @@ import kotlin.system.exitProcess
 class CookiesBotApplication(val botProperties: BotProperties, val setuControl: SetuListenControl) : CommandLineRunner {
     override fun run(vararg args: String?) = runBlocking {
         try {
-            val bot = Bot(botProperties.qq, botProperties.password).alsoLogin()
-
+            val bot = BotFactory.newBot(botProperties.qq, botProperties.password)
+            bot.login()
             setuControl.listen(bot)
-
-            bot.join()
         } catch (e: Exception) {
             exitProcess(0)
         }
